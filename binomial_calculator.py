@@ -49,7 +49,7 @@ def main():
             st.title("Poisson Distribution Calculator")
 
             x = st.number_input("Enter the number of trials ", min_value=0, step=1, value=5)
-            μ = st.number_input("Enter the mean ", min_value=0, step=1, value=10)
+            μ = float(st.number_input("Enter the mean ", min_value=0, value=10))
 
             #calculation
             e = 2.71828182845
