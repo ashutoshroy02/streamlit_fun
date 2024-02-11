@@ -26,10 +26,10 @@ def binomial_distribution(n, x, p):
     return probability
 
 def main():
-    st.sidebar.radio(
-        option = ["Binomial calculator","Poisson calculator"]
+    choice = st.sidebar.radio(
+        option = ("Binomial calculator","Poisson calculator")
     )
-    if option == "Binomial calculator":
+    if choice == "Binomial calculator":
             st.title("Binomial Distribution Calculator")
             
             # Input fields for user to enter values
@@ -44,7 +44,7 @@ def main():
             st.write(f"The probability of getting {x} successes in {n} trials with a success probability of {p} is **{probability:.4f}**")
            
             st.header(f"b({x};{n},{p}) = {probability}")
-    elif option == "Poisson calculator":
+    elif choice == "Poisson calculator":
             st.title("Poisson Distribution Calculator")
 
             x = st.number_input("Enter the number of trials ", min_value=0, step=1, value=5)
