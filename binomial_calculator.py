@@ -26,20 +26,23 @@ def binomial_distribution(n, x, p):
     return probability
 
 def main():
-    st.title("Binomial Distribution Calculator")
-    
-    # Input fields for user to enter values
-    n = st.number_input("Enter the number of trials (n)", min_value=0, step=1, value=10)
-    x = st.number_input("Enter the number of successes (x)", min_value=0, step=1, value=5)
-    p = st.slider("Enter the probability of success (p)", min_value=0.0, max_value=1.0, value=0.5, step=0.01)
-    
-    # Calculate the binomial distribution
-    probability = binomial_distribution(n, x, p)
-    
-    # Display the result
-    st.write(f"The probability of getting {x} successes in {n} trials with a success probability of {p} is **{probability:.4f}**")
-   
-    st.header(f"b({x};{n},{p}) = {probability}")
-    
+    st.sidebar.[Binomial Distribution Calculator]
+    with st.sidebar:
+        st.[Binomial Distribution Calculator]:
+            st.title("Binomial Distribution Calculator")
+            
+            # Input fields for user to enter values
+            n = st.number_input("Enter the number of trials (n)", min_value=0, step=1, value=10)
+            x = st.number_input("Enter the number of successes (x)", min_value=0, step=1, value=5)
+            p = st.slider("Enter the probability of success (p)", min_value=0.0, max_value=1.0, value=0.5, step=0.01)
+            
+            # Calculate the binomial distribution
+            probability = binomial_distribution(n, x, p)
+            
+            # Display the result
+            st.write(f"The probability of getting {x} successes in {n} trials with a success probability of {p} is **{probability:.4f}**")
+           
+            st.header(f"b({x};{n},{p}) = {probability}")
+        
 if __name__ == "__main__":
     main()
