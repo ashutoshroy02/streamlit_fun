@@ -26,9 +26,10 @@ def binomial_distribution(n, x, p):
     return probability
 
 def main():
-    choice = st.sidebar.radio(
-        option = ("Binomial calculator","Poisson calculator")
-    )
+    choice = st.sidebar.selectbox(
+        "which to use?",
+   ("Binomial calculator","Poisson calculator")
+   )
     if choice == "Binomial calculator":
             st.title("Binomial Distribution Calculator")
             
