@@ -26,9 +26,10 @@ def binomial_distribution(n, x, p):
     return probability
 
 def main():
-    st.sidebar.[Binomial Distribution Calculator]
-    with st.sidebar:
-        st.[Binomial Distribution Calculator]:
+    st.sidebar.radio(
+        option = ["Binomial calculator","Poisson calculator"]
+    )
+    if option == "Binomial calculator":
             st.title("Binomial Distribution Calculator")
             
             # Input fields for user to enter values
@@ -43,6 +44,16 @@ def main():
             st.write(f"The probability of getting {x} successes in {n} trials with a success probability of {p} is **{probability:.4f}**")
            
             st.header(f"b({x};{n},{p}) = {probability}")
-        
+elif option == "Poisson calculator":
+            st.title("Poisson Distribution Calculator")
+
+            x = st.number_input("Enter the number of trials ", min_value=0, step=1, value=5)
+            μ = st.number_input("Enter the mean ", min_value=0, step=1, value=10)
+
+            #calculation
+            e = 2.71828182845
+            poisson = (e**(-μ) * (μ)**x)/fact(x)
+            st.write(f"The probability is **{poisson:.4f}**")
+            st.header(f"p({x};{μ}) = {poisson}")
 if __name__ == "__main__":
     main()
