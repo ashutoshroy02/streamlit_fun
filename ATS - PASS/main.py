@@ -8,14 +8,15 @@ from dotenv import load_dotenv
 load_dotenv()  
 
 # Configure the API key for Google Generative AI
-# genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-genai.configure(api_key = 'AIzaSyBYU6sCd9c6xSPDQIcfxCfd7VMJ2si3GSs')
+genai.configure(api_key='AIzaSyBYU6sCd9c6xSPDQIcfxCfd7VMJ2si3GSs')
 
 # Define the function to generate Gemini response
-def get_gemini_response(input):
-    model = genai.GenerativeModel('gemini-pro')
-    response = model.generate_content(input)
-    return response.text
+def get_gemini_response(input_text):
+    response = genai.generate_text(
+        model="models/text-bison-001",  # Replace with "models/gemini-pro" if applicable
+        prompt=input_text
+    )
+    return response.result
 
 # Function to extract text from PDF
 def input_pdf_text(uploaded_file):
