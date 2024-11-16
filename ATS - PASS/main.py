@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()  
 
 # Configure the API key for Google Generative AI
-genai.configure(api_key='AIzaSyBYU6sCd9c6xSPDQIcfxCfd7VMJ2si3GSs')
+genai.configure(api_key='AIzaSyByljQNA6238YzBAPGPWmEYl9BQtnqIBnk')
 
 # Define the function to generate Gemini response
 def get_gemini_response(input_text):
