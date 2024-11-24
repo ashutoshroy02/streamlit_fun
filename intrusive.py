@@ -58,7 +58,7 @@ def main():
     elif choice == "Birthday Facts":
         st.title("🎉 Birthday Calculator - Fun Facts About You!")
 
-        birth_date = st.date_input("Enter your birthday:", value=datetime(2003, 6, 22).date())
+        birth_date = st.date_input("Enter your birthday:", value=datetime(2003, 2, 24).date())
         today = datetime.now().date()
 
         next_birthday = datetime(today.year, birth_date.month, birth_date.day).date()
