@@ -30,7 +30,7 @@ def binomial_distribution(n, x, p):
 def main():
     choice = st.sidebar.selectbox(
         "Choose a calculator:",
-        ("Binomial Calculator", "Poisson Calculator", "Birthday Facts")
+        ("Birthday Facts","Binomial Calculator", "Poisson Calculator")
     )
 
     if choice == "Binomial Calculator":
