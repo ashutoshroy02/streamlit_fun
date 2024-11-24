@@ -1,4 +1,6 @@
 import streamlit as st
+from datetime import datetime, timedelta
+from math import floor
 st.balloons()
 def fact(a):
     if a==0:
@@ -28,7 +30,7 @@ def binomial_distribution(n, x, p):
 def main():
     choice = st.sidebar.selectbox(
         "which to use?",
-   ("Binomial calculator","Poisson calculator")
+   ("Binomial calculator","Poisson calculator","Birthdate Fact")
    )
     if choice == "Binomial calculator":
             st.title("Binomial Distribution Calculator")
@@ -56,5 +58,115 @@ def main():
             poisson = (e**(-μ) * (μ)**x)/fact(x)
             st.write(f"The probability is **{poisson:.4f}**")
             st.header(f"p({x};{μ}) = {poisson}")
+    elif choice == "Birthdate Fact":
+        st.title("🎉 Birthday Calculator - Fun Facts About You!")
+
+        birth_date = st.date_input("Enter your birthday:", value=datetime(2003, 2, 24))
+        
+        today = datetime.now()
+        next_birthday = datetime(today.year, birth_date.month, birth_date.day)
+        
+        if next_birthday < today:
+            next_birthday = datetime(today.year + 1, birth_date.month, birth_date.day)
+        
+        days_to_next_birthday = (next_birthday - today).days
+        days_since_last_birthday = (today - (next_birthday - timedelta(days=365))).days
+        age_years = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+        age_months = (today.year - birth_date.year) * 12 + today.month - birth_date.month
+        age_days = (today - birth_date).days
+        age_weeks = age_days // 7
+        age_hours = age_days * 24
+        age_minutes = age_hours * 60
+        age_seconds = age_minutes * 60
+        
+        # Output: Birthday stats
+        st.subheader(f"You were born on {birth_date.strftime('%A, %B %d, %Y')}.")
+        st.write(f"🎂 **Days to Next Birthday:** {days_to_next_birthday} days")
+        st.write(f"🗓️ **Days Since Last Birthday:** {days_since_last_birthday} days")
+        st.write(f"👶 **Your Exact Age:** {age_years} years, {floor(age_months % 12)} months, and {today.day - birth_date.day} days")
+        st.write(f"📆 Or in other formats:")
+        st.write(f"- {age_months} months old")
+        st.write(f"- {age_weeks} weeks old")
+        st.write(f"- {age_days} days old")
+        st.write(f"- {age_hours:,} hours old")
+        st.write(f"- {age_minutes:,} minutes old")
+        st.write(f"- {age_seconds:,} seconds old")
+        
+        # Animal ages
+        dog_years = age_years * 7
+        cat_years = age_years * 5
+        rabbit_years = age_years * 12
+        elephant_years = age_years * 0.5
+        bee_years = age_years * 1000
+        
+        st.subheader("🐾 If you were an animal, you'd be:")
+        st.write(f"- **{dog_years} years old as a dog**")
+        st.write(f"- **{cat_years} years old as a cat**")
+        st.write(f"- **{rabbit_years} years old as a rabbit**")
+        st.write(f"- **{elephant_years:.1f} years old as an elephant**")
+        st.write(f"- **{bee_years:,} years old as a bee**")
+        
+        # Zodiac signs and attributes
+        zodiac_signs = {
+            "Aries": (3, 21, 4, 19),
+            "Taurus": (4, 20, 5, 20),
+            "Gemini": (5, 21, 6, 20),
+            "Cancer": (6, 21, 7, 22),
+            "Leo": (7, 23, 8, 22),
+            "Virgo": (8, 23, 9, 22),
+            "Libra": (9, 23, 10, 22),
+            "Scorpio": (10, 23, 11, 21),
+            "Sagittarius": (11, 22, 12, 21),
+            "Capricorn": (12, 22, 1, 19),
+            "Aquarius": (1, 20, 2, 18),
+            "Pisces": (2, 19, 3, 20),
+        }
+        
+        for sign, (start_month, start_day, end_month, end_day) in zodiac_signs.items():
+            if (birth_date.month == start_month and birth_date.day >= start_day) or (
+                birth_date.month == end_month and birth_date.day <= end_day
+            ):
+                horoscope_sign = sign
+                break
+        
+        st.subheader("🔮 Your Zodiac Sign")
+        st.write(f"Your sign is **{horoscope_sign}**.")
+        
+        # Fun facts
+        breaths_taken = age_days * 20 * 60 * 24
+        heartbeats = age_days * 80 * 60 * 24
+        laughter = age_days * 10
+        st.subheader("✨ Fun Facts About You")
+        st.write(f"💨 You have taken approximately **{breaths_taken:,} breaths.**")
+        st.write(f"❤️ Your heart has beaten around **{heartbeats:,} times.**")
+        st.write(f"😂 You have laughed about **{laughter:,} times.**")
+        
+        # Generations
+        generation = "Generation Z (Post-Millennial)" if birth_date.year >= 1997 else "Millennial"
+        st.subheader("👨‍👩‍👧 Your Generation")
+        st.write(f"You are part of **{generation}**.")
+        
+        # Age on other planets
+        planets = {
+            "Mercury": 0.24,
+            "Venus": 0.62,
+            "Mars": 1.88,
+            "Jupiter": 11.86,
+            "Saturn": 29.46,
+            "Uranus": 84.01,
+            "Neptune": 164.79,
+            "Pluto": 248.59,
+        }
+        st.subheader("🌌 Your Age on Other Planets")
+        for planet, orbit_years in planets.items():
+            planet_age = age_years / orbit_years
+            st.write(f"- **{planet}:** {planet_age:.2f} years old")
+        
+        # Footer
+        st.info("🎉 Have fun exploring these fun facts about your birthday and age!")
+    
+        
+
+
 if __name__ == "__main__":
     main()
