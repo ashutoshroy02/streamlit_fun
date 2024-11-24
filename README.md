@@ -38,7 +38,7 @@ This repository contains three Streamlit-based applications:
 - Python 3.x
 - Streamlit
 - Additional dependencies:
-  - `pytube` (for `ytdown.py`)
+  - `pytube-fix` (for `ytdown.py`)
 
 ### How to Run
 1. Install dependencies:  
