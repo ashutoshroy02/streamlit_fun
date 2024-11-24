@@ -61,24 +61,31 @@ def main():
     elif choice == "Birthdate Fact":
         st.title("🎉 Birthday Calculator - Fun Facts About You!")
 
-        birth_date = st.date_input("Enter your birthday:", value=datetime(2003, 2, 24))
-        
+        # Input: User's birthday
+        birth_date = st.date_input("Enter your birthday:", value=datetime(2003, 6, 22).date())
+    
+        # Ensure today's date is a `date` object
         today = datetime.now().date()
-        # today = datetime.now()
-        next_birthday = datetime(today.year, birth_date.month, birth_date.day)
-        
+    
+        # Create next_birthday as a `date` object
+        next_birthday = datetime(today.year, birth_date.month, birth_date.day).date()
         if next_birthday < today:
-            next_birthday = datetime(today.year + 1, birth_date.month, birth_date.day)
-        
+            next_birthday = datetime(today.year + 1, birth_date.month, birth_date.day).date()
+    
+        # Calculate days to next birthday
         days_to_next_birthday = (next_birthday - today).days
         days_since_last_birthday = (today - (next_birthday - timedelta(days=365))).days
-        age_years = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
-        age_months = (today.year - birth_date.year) * 12 + today.month - birth_date.month
+    
+        # Calculate age
         age_days = (today - birth_date).days
-        age_weeks = age_days // 7
-        age_hours = age_days * 24
-        age_minutes = age_hours * 60
-        age_seconds = age_minutes * 60
+        age_years = age_days // 365
+        age_months = age_years * 12 + today.month - birth_date.month
+    
+        # Outputs
+        st.write(f"🎂 **Days to Next Birthday:** {days_to_next_birthday} days")
+        st.write(f"🗓️ **Days Since Last Birthday:** {days_since_last_birthday} days")
+        st.write(f"📆 **Age in Days:** {age_days} days")
+        st.write(f"👶 **Age in Years:** {age_years} years")
         
         # Output: Birthday stats
         st.subheader(f"You were born on {birth_date.strftime('%A, %B %d, %Y')}.")
