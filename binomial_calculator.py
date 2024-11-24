@@ -63,7 +63,8 @@ def main():
 
         birth_date = st.date_input("Enter your birthday:", value=datetime(2003, 2, 24))
         
-        today = datetime.now()
+        today = datetime.now().date()
+        # today = datetime.now()
         next_birthday = datetime(today.year, birth_date.month, birth_date.day)
         
         if next_birthday < today:
