@@ -4,6 +4,14 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 import streamlit as st
 
+st.markdown("""
+<style>
+    .css-1d391kg {
+        display: none;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 st.title("Automatic/Bulk Email sender to IIT Professors/Other ")
 sender_email = st.text_input("Enter your Email address ")
 
