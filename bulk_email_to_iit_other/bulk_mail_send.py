@@ -129,7 +129,7 @@ if sender_email:
                     i=i+1
 
                 st.success("All Emails sent successfully!")
-
+        st.write("Special thanks to Baibhav for providing IIT Emails.")
             except Exception as e:
                 st.error(f"Error: {e}")
 
