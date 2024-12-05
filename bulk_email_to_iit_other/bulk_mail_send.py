@@ -99,6 +99,8 @@ if sender_email:
         subject = st.text_input("Enter your Subject ")
         body = st.text_area("Write the Body ",height=300)
 
+        st.write("Special thanks to Baibhav for providing IIT Emails.")
+        
         if st.button("CLICK TO SEND 👌"):
             # Setting up the SMTP server and login
             try:
@@ -129,7 +131,6 @@ if sender_email:
                     i=i+1
 
                 st.success("All Emails sent successfully!")
-        st.write("Special thanks to Baibhav for providing IIT Emails.")
             except Exception as e:
                 st.error(f"Error: {e}")
 
