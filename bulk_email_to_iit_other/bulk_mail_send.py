@@ -2,6 +2,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
+import pandas as pd
 import streamlit as st
 
 st.markdown("""
@@ -12,22 +13,36 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("Automatic/Bulk Email sender to IIT Professors/Other ")
+st.title("Automatic/Bulk Email sender to IIT Professors/Other")
+
 sender_email = st.text_input("Enter your Email address ")
 
 if sender_email:
-    password = st.text_input("Enter you App Password ")
+    password = st.text_input("Enter your App Password ")
     st.markdown("[FIND YOUR APP PASSWORD](https://www.youtube.com/watch?v=N_J3HCATA1c)")
+
     if password:
-        uploaded_file = st.file_uploader("Choose your File to Attach", type=["pdf"])
-        
-        option = st.radio("Select Recipients", ("IIT", "OTHER"))
-        if option == "OTHER":
-            other_recipients = st.text_input("Enter the Recipient (separated by commas)")
-            recipients = other_recipients.split(',')
-            
-        elif option == "IIT":
-                          
+        # Choose file upload or prelist option
+        upload_option = st.radio("Choose how to provide recipients", ("Upload File (Excel/CSV)", "Predefined IIT List", "Enter Other Emails"))
+
+        recipients = []
+
+        if upload_option == "Upload File (Excel/CSV)":
+            uploaded_file = st.file_uploader("Choose your File (Excel/CSV) with Name and Email", type=["csv", "xlsx"])
+
+            if uploaded_file is not None:
+                if uploaded_file.name.endswith('.csv'):
+                    df = pd.read_csv(uploaded_file)
+                elif uploaded_file.name.endswith('.xlsx'):
+                    df = pd.read_excel(uploaded_file)
+
+                if "name" in df.columns and "email" in df.columns:
+                    recipients = df[['name', 'email']].values.tolist()
+                else:
+                    st.error("The file must contain 'name' and 'email' columns.")
+
+        elif upload_option == "Predefined IIT List":
+            # Predefined IIT email list
             iit_recipients = [
             "shwetaag@cse.iitm.ac.in", "sanjiva@cse.iitd.ac.in", "adsul@cse.iitb.ac.in", "bala@cs.iitr.ac.in", 
             "bhij@cse.iitkgp.ac.in", "anand.ashish@iitg.ac.in", "antony.franklin@cse.iith.ac.in", 
@@ -92,47 +107,49 @@ if sender_email:
             "viresh@cse.iitd.ac.in", "vinayr@cse.iitb.ac.in", "sourangshu@cse.iitkgp.ac.in", "akshayss@cse.iitb.ac.in", 
             "ssp@cse.iitkgp.ac.in", "sayandeepsaha@cse.iitb.ac.in", "sudeshna@cse.iitkgp.ac.in", "sunita@cse.iitb.ac.in", 
             "skolay@cse.iitkgp.ac.in", "sruthi@cse.iitb.ac.in", "smisra@cse.iitkgp.ac.in", "surajs@cse.iitb.ac.in"]
-             
-            recipients = iit_recipients
+            
+            recipients = [(email.split('@')[0], email) for email in iit_recipients]
 
-        # Email subject and body
+        elif upload_option == "Enter Other Emails":
+            other_recipients = st.text_input("Enter the Recipient Emails (separated by commas)")
+            if other_recipients:
+                recipients = [(email.strip(), email.strip()) for email in other_recipients.split(',')]
+        print(recipients)
+        # Subject and body inputs
         subject = st.text_input("Enter your Subject ")
-        body = st.text_area("Write the Body ",height=300)
+        body = st.text_area("Write the Body", height=300)
 
-        st.write("Special thanks to Baibhav for providing IIT Emails.")
-        
-        if st.button("CLICK TO SEND 👌"):
-            # Setting up the SMTP server and login
+        uploaded_file_attach = st.file_uploader("Choose a file to attach", type=["pdf"])
+
+        if st.button("CLICK TO SEND 👌") and len(recipients) > 0:
             try:
+                # Setting up the SMTP server and login
                 server = smtplib.SMTP('smtp.gmail.com', 587)
                 server.starttls()  
                 server.login(sender_email, password)
-                
-                # Send email
 
-                i=1
-                # Loop through the recipients and send the email
-                for recipient_email in recipients:
+                # Send email
+                for i, (name, recipient_email) in enumerate(recipients, 1):
                     msg = MIMEMultipart()
                     msg['From'] = sender_email
                     msg['To'] = recipient_email
                     msg['Subject'] = subject
-                    
+
                     msg.attach(MIMEText(body, 'plain'))
-                
-                    # Attach the uploaded resume
-                    part = MIMEApplication(uploaded_file.read(), _subtype="pdf")
-                    part.add_header('Content-Disposition', 'attachment', filename="resume.pdf")
-                    msg.attach(part)
+
+                    if uploaded_file_attach is not None:
+                        part = MIMEApplication(uploaded_file_attach.read(), _subtype="pdf")
+                        part.add_header('Content-Disposition', 'attachment', filename=uploaded_file_attach.name)
+                        msg.attach(part)
 
                     # Send the email
                     server.sendmail(sender_email, recipient_email, msg.as_string())
-                    st.write(f"{i} mail sent.")
-                    i=i+1
+                    st.write(f"{i} mail sent to {name}.")
 
                 st.success("All Emails sent successfully!")
             except Exception as e:
                 st.error(f"Error: {e}")
-
             finally:
                 server.quit()
+
+        st.write("Special thanks to Baibhav for providing IIT Emails.")
